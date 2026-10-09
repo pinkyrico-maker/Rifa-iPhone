@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Rifa Apple · conexión corregida</title>
+<style>
+:root{--bg:#0b0d10;--card:#15191e;--line:#303741;--txt:#f7f8fa;--mut:#9da6b2;--gold:#d8b76e;--red:#ef5961;--green:#39c887}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;padding-bottom:88px}
+.wrap{max-width:760px;margin:auto;padding:12px}.top{display:flex;justify-content:space-between;align-items:center;padding-top:env(safe-area-inset-top)}
+.brand{font-size:20px;font-weight:900}.sync{font-size:12px;color:var(--mut)}.ok{color:#9ce5c2}.bad{color:#ff9ea4}
+button,input,select,textarea{-webkit-appearance:none;appearance:none;font:inherit}button{touch-action:manipulation}.btn{border:1px solid var(--line);background:#20262d;color:#fff;border-radius:12px;padding:11px 13px;font-weight:800}.gold{background:var(--gold);border-color:var(--gold);color:#111}.redbtn{background:#4b2025;color:#ffd9dc}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px}.hero{display:grid;grid-template-columns:88px 1fr;gap:13px;align-items:center}.heroicon{height:88px;border-radius:16px;background:#20262d;display:flex;align-items:center;justify-content:center;font-size:38px}
+h1{font-size:20px;margin:0 0 7px}.price{font-size:25px;font-weight:900;color:var(--gold)}.sub{font-size:13px;color:var(--mut);margin-top:5px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}.stat{background:#101318;border:1px solid var(--line);border-radius:13px;padding:9px 4px;text-align:center}.stat b{display:block;font-size:20px}.stat small{font-size:11px;color:var(--mut)}
+.head{display:flex;justify-content:space-between;align-items:center;gap:8px}.head h2{font-size:17px;margin:0}.legend{font-size:10px;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:11px}.num{aspect-ratio:1;border:1px solid #3a424c;border-radius:7px;background:#262c34;color:#fff;font-size:12px;font-weight:900;padding:0;position:relative}.num.pending{background:#4b2025;border-color:#b7434b;color:#ffb4b8}.num.pending:after{content:"";position:absolute;left:15%;right:15%;top:50%;height:2px;background:var(--red);transform:rotate(-35deg)}.num.paid{background:#153e2d;border-color:#2d8f65;color:#a5efcb}
+.note{font-size:12px;line-height:1.45;color:var(--mut);border:1px solid var(--line);background:#101318;border-radius:12px;padding:10px;margin-top:12px}
+.view{display:none}.view.active{display:block}.admin-only{display:none}.admin .admin-only{display:block}.public-only{display:block}.admin .public-only{display:none}
+.field{margin:11px 0}.field label{display:block;color:var(--mut);font-size:12px;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;border:1px solid #343b45;background:#0f1216;color:#fff;border-radius:12px;padding:13px;font-size:16px!important}.field textarea{min-height:72px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.person{display:grid;grid-template-columns:48px 1fr auto;gap:9px;align-items:center;padding:10px 0;border-bottom:1px solid #272d34}.badge{height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900}.badge.pending{background:#4b2025;color:#ffb4b8}.badge.paid{background:#153e2d;color:#a5efcb}.person small{display:block;color:var(--mut);margin-top:3px}.empty{text-align:center;color:var(--mut);padding:26px 5px}
+.tabs{position:fixed;z-index:20;left:0;right:0;bottom:0;background:rgba(11,13,16,.96);border-top:1px solid var(--line);padding:7px 8px calc(7px + env(safe-area-inset-bottom));display:flex;justify-content:center}.tabsin{width:min(760px,100%);display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.tab{border:0;background:transparent;color:var(--mut);padding:9px;border-radius:10px;font-size:11px;font-weight:800}.tab.active{background:#20262d;color:#fff}
+.back{display:none;position:fixed;z-index:50;inset:0;background:rgba(0,0,0,.74);padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom);align-items:flex-end}.back.open{display:flex}.modal{width:min(620px,100%);max-height:92vh;overflow:auto;margin:auto auto 0;background:#171b20;border:1px solid #343b45;border-radius:20px 20px 0 0;padding:15px;-webkit-overflow-scrolling:touch}.modal h3{margin:0}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.toast{position:fixed;z-index:80;left:50%;bottom:95px;transform:translateX(-50%) translateY(15px);background:#fff;color:#111;padding:10px 14px;border-radius:999px;font-size:13px;font-weight:800;opacity:0;pointer-events:none;transition:.2s;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%)}
+</style></head>
+<body>
+<div class="wrap">
+<div class="top"><div><div class="brand">🎟️ Rifa Apple</div><div id="sync" class="sync">Conectando…</div></div><button id="adminBtn" class="btn">Administrar</button></div>
+
+<section id="vRifa" class="view active">
+<div class="card hero"><div class="heroicon">📱⌚</div><div><h1 id="title">Rifa Apple</h1><div id="price" class="price">$20.000</div><div class="sub">📍 <span id="location">Medellín</span> · Estado 10/10 · Listo para entrega</div></div></div>
+<div class="stats"><div class="stat"><b id="available">—</b><small>Disponibles</small></div><div class="stat"><b id="pending">—</b><small>Separados</small></div><div class="stat"><b id="paid">—</b><small>Pagados</small></div></div>
+<div class="card"><div class="head"><h2>Números 00–99</h2><span class="legend">⚫ Libre · 🔴 Debe · 🟢 Pagado</span></div><div id="grid" class="grid"></div>
+<div class="public-only note">Vista pública: aquí solo se muestra el estado de cada número. Los nombres y teléfonos son privados.</div>
+<div class="admin-only note">Modo administrador: toca un número para registrar, editar o liberar al participante.</div></div>
+<div class="card"><button id="imageBtn" class="btn gold" style="width:100%">📷 Compartir imagen de avance</button></div>
+</section>
+
+<section id="vPeople" class="view"><div class="card"><div class="head"><h2>Participantes</h2><button id="addBtn" class="btn gold admin-only">+ Agregar</button></div>
+<div class="public-only note">Solo el administrador puede consultar los datos de participantes.</div>
+<div class="admin-only"><div class="field"><input id="search" placeholder="Buscar nombre, teléfono o número"></div>
+<div class="row"><div class="stat"><b id="collected">$0</b><small>Recaudado</small></div><div class="stat"><b id="due">$0</b><small>Por cobrar</small></div></div><div id="people"></div></div></div></section>
+
+<section id="vConfig" class="view"><div class="card"><h2 style="font-size:17px;margin-top:0">Configuración</h2>
+<div class="public-only note">Solo el administrador puede modificar la rifa.</div>
+<div class="admin-only"><div class="field"><label>Título / premio</label><textarea id="cTitle"></textarea></div><div class="row"><div class="field"><label>Valor boleta</label><input id="cPrice" type="number" inputmode="numeric"></div><div class="field"><label>Ciudad</label><input id="cLocation"></div></div><button id="saveConfig" class="btn gold" style="width:100%">Guardar configuración</button><button id="logout" class="btn" style="width:100%;margin-top:9px">Cerrar sesión</button></div></div></section>
+</div>
+
+<nav class="tabs"><div class="tabsin"><button class="tab active" data-v="Rifa">🎟️<br>Rifa</button><button class="tab" data-v="People">👥<br>Participantes</button><button class="tab" data-v="Config">⚙️<br>Configurar</button></div></nav>
+
+<div id="loginBack" class="back"><div class="modal"><h3>Acceso administrador</h3><div class="field"><label>Correo</label><input id="email" type="email" autocomplete="username"></div><div class="field"><label>Contraseña</label><input id="pass" type="password" autocomplete="current-password"></div><div id="loginMsg" class="note">Usa el usuario creado en Supabase.</div><div class="actions"><button id="cancelLogin" class="btn">Cancelar</button><button id="login" class="btn gold">Ingresar</button></div></div></div>
+
+<div id="pBack" class="back"><div class="modal"><h3 id="pTitle">Registrar participante</h3><div class="field"><label>Número</label><select id="pNumber"></select></div><div class="field"><label>Nombre</label><input id="pName" autocomplete="name"></div><div class="field"><label>Teléfono</label><input id="pPhone" type="tel" inputmode="tel" autocomplete="tel"></div><div class="field"><label>Estado</label><select id="pStatus"><option value="pending">Pendiente / debe</option><option value="paid">Pagado</option></select></div><div class="field"><label>Nota opcional</label><textarea id="pNote"></textarea></div><div class="actions"><button id="cancelP" class="btn">Cancelar</button><button id="saveP" class="btn gold">Guardar</button></div><button id="release" class="btn redbtn" style="display:none;width:100%;margin-top:9px">Liberar número</button></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+(function(){
+"use strict";
+var U="https://llzgspvmgksvarpryufk.supabase.co",K="sb_publishable_erVc6wf_bGDU2a5I843ukw_Udjhw9dR",SK="rifa_session_v3";
+var S={nums:[],set:{title:"Rifa Apple",ticket_price:20000,location:"Medellín"},people:[],session:null,editing:null};
+function E(i){return document.getElementById(i)} function fmt(n){return String(n).padStart(2,"0")} function money(v){return "$"+Math.round(Number(v)||0).toLocaleString("es-CO")}
+function toast(m){var t=E("toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},1800)}
+function H(auth,extra){var h={};if(auth&&S.session)h.Authorization="Bearer "+S.session.access_token;return Object.assign(h,extra||{})}
+async function api(path,opt,auth){
+  opt=opt||{};opt.headers=H(auth,opt.headers);
+  // La clave PUBLICA viaja como parametro URL: Safari no necesita preflight para lecturas anonimas.
+  var url=U+path+(path.indexOf("?")>=0?"&":"?")+"apikey="+encodeURIComponent(K);
+  var r,tx,d=null;
+  try{r=await fetch(url,opt)}catch(err){throw Error("No se pudo consultar "+(path.indexOf("raffle_settings")>=0?"configuracion":path.indexOf("raffle_numbers")>=0?"numeros":"servidor")+" ("+err.message+")")}
+  tx=await r.text();if(tx){try{d=JSON.parse(tx)}catch(e){d=tx}}
+  if(!r.ok)throw Error((d&&d.message)||(d&&d.error_description)||(d&&d.hint)||("Error "+r.status));return d
+}
+function saveSession(s){S.session=s;try{localStorage.setItem(SK,JSON.stringify(s))}catch(e){}} function clearSession(){S.session=null;try{localStorage.removeItem(SK)}catch(e){}}
+function loadSession(){try{var s=JSON.parse(localStorage.getItem(SK)||"null");if(s&&s.access_token)S.session=s}catch(e){}}
+function modal(id,on){E(id).classList.toggle("open",!!on);document.body.style.overflow=on?"hidden":""}
+function admin(on){document.body.classList.toggle("admin",!!on);E("adminBtn").textContent=on?"Administrador ✓":"Administrar"}
+async function refresh(){if(!S.session||!S.session.refresh_token)return false;try{var s=await api("/auth/v1/token?grant_type=refresh_token",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({refresh_token:S.session.refresh_token})},false);saveSession(s);return true}catch(e){clearSession();admin(false);return false}}
+async function valid(){if(!S.session)return false;if(S.session.expires_at&&Date.now()/1000>S.session.expires_at-60)return refresh();return true}
+async function publicLoad(){
+ try{
+  // Los numeros son la consulta imprescindible; configuracion es independiente.
+  var nums=await api("/rest/v1/raffle_numbers?select=number,status&order=number.asc",{},false);
+  if(!Array.isArray(nums)||nums.length!==100)throw Error("Respuesta de numeros incompleta ("+(nums&&nums.length)+")");
+  S.nums=nums;
+  try{var settings=await api("/rest/v1/raffle_settings?select=id,title,ticket_price,location&id=eq.1",{},false);if(settings&&settings[0])S.set=settings[0]}catch(e){console.warn("No se pudo cargar configuracion",e)}
+  render();E("sync").textContent="● En línea · "+new Date().toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"});E("sync").className="sync ok";
+ }catch(e){E("sync").textContent="Sin conexión · "+e.message;E("sync").className="sync bad"}
+}
+async function privateLoad(){if(!(await valid()))return;try{S.people=await api("/rest/v1/participants?select=id,number,name,phone,status,note,created_at,updated_at&order=number.asc",{},true)||[];admin(true);renderPeople()}catch(e){toast("No pude cargar participantes: "+e.message)}}
+function render(){E("title").textContent=S.set.title;E("price").textContent=money(S.set.ticket_price);E("location").textContent=S.set.location||"Medellín";var c={available:0,pending:0,paid:0};S.nums.forEach(function(n){c[n.status]++});E("available").textContent=c.available;E("pending").textContent=c.pending;E("paid").textContent=c.paid;var g=E("grid");g.innerHTML="";S.nums.forEach(function(n){var b=document.createElement("button");b.type="button";b.className="num "+n.status;b.textContent=fmt(n.number);b.onclick=function(){if(S.session)openP(n.number);else toast("Número "+fmt(n.number)+" · "+(n.status==="available"?"Disponible":n.status==="paid"?"Pagado":"Separado"))};g.appendChild(b)});E("cTitle").value=S.set.title||"";E("cPrice").value=S.set.ticket_price||0;E("cLocation").value=S.set.location||""}
+function renderPeople(){var q=(E("search").value||"").toLowerCase(),box=E("people");box.innerHTML="";var a=S.people.filter(function(p){return !q||(fmt(p.number)+" "+p.name+" "+p.phone).toLowerCase().indexOf(q)>=0});if(!a.length)box.innerHTML='<div class="empty">No hay participantes.</div>';a.forEach(function(p){var d=document.createElement("div");d.className="person";d.innerHTML='<div class="badge '+p.status+'">'+fmt(p.number)+'</div><div><b></b><small></small></div><button class="btn">'+(p.status==="paid"?"PAGADO":"DEBE")+"</button>";d.querySelector("b").textContent=p.name;d.querySelector("small").textContent=p.phone+(p.note?" · "+p.note:"");d.onclick=function(){openP(p.number)};box.appendChild(d)});var pa=S.people.filter(function(p){return p.status==="paid"}).length,pe=S.people.filter(function(p){return p.status==="pending"}).length;E("collected").textContent=money(pa*S.set.ticket_price);E("due").textContent=money(pe*S.set.ticket_price)}
+function fill(selected){var s=E("pNumber");s.innerHTML="";S.nums.forEach(function(n){if(n.status==="available"||n.number===selected){var o=document.createElement("option");o.value=n.number;o.textContent=fmt(n.number)+(n.status!=="available"?" · ocupado":"");if(n.number===selected)o.selected=true;s.appendChild(o)}})}
+function openP(n){if(!S.session)return;var p=S.people.find(function(x){return x.number===Number(n)});S.editing=p||null;fill(Number(n));E("pNumber").disabled=!!p;E("pTitle").textContent=p?"Editar participante":"Registrar participante";E("pName").value=p?p.name:"";E("pPhone").value=p?p.phone:"";E("pStatus").value=p?p.status:"pending";E("pNote").value=p?(p.note||""):"";E("release").style.display=p?"block":"none";modal("pBack",true)}
+async function login(){var em=E("email").value.trim(),pw=E("pass").value;if(!em||!pw)return toast("Ingresa correo y contraseña");E("login").disabled=true;try{var s=await api("/auth/v1/token?grant_type=password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:em,password:pw})},false);saveSession(s);modal("loginBack",false);await privateLoad();render();toast("Administrador activo")}catch(e){E("loginMsg").textContent="No fue posible ingresar: "+e.message}finally{E("login").disabled=false}}
+async function saveP(){if(!(await valid()))return toast("Sesión vencida");var n=Number(E("pNumber").value),name=E("pName").value.trim(),phone=E("pPhone").value.trim(),status=E("pStatus").value,note=E("pNote").value.trim();if(!name||!phone)return toast("Nombre y teléfono son obligatorios");E("saveP").disabled=true;try{if(S.editing)await api("/rest/v1/participants?number=eq."+n,{method:"PATCH",headers:{"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify({name:name,phone:phone,status:status,note:note,updated_at:new Date().toISOString()})},true);else await api("/rest/v1/participants",{method:"POST",headers:{"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify({number:n,name:name,phone:phone,status:status,note:note})},true);await api("/rest/v1/raffle_numbers?number=eq."+n,{method:"PATCH",headers:{"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify({status:status,updated_at:new Date().toISOString()})},true);modal("pBack",false);await Promise.all([publicLoad(),privateLoad()]);toast("Guardado")}catch(e){toast("Error: "+e.message)}finally{E("saveP").disabled=false}}
+async function release(){if(!S.editing||!confirm("¿Liberar el número "+fmt(S.editing.number)+"?"))return;var n=S.editing.number;try{await api("/rest/v1/participants?number=eq."+n,{method:"DELETE",headers:{"Prefer":"return=minimal"}},true);await api("/rest/v1/raffle_numbers?number=eq."+n,{method:"PATCH",headers:{"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify({status:"available",updated_at:new Date().toISOString()})},true);modal("pBack",false);await Promise.all([publicLoad(),privateLoad()]);toast("Número liberado")}catch(e){toast("Error: "+e.message)}}
+async function saveConfig(){if(!(await valid()))return toast("Sesión vencida");var b={title:E("cTitle").value.trim(),ticket_price:Number(E("cPrice").value)||0,location:E("cLocation").value.trim(),updated_at:new Date().toISOString()};try{await api("/rest/v1/raffle_settings?id=eq.1",{method:"PATCH",headers:{"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify(b)},true);await publicLoad();renderPeople();toast("Configuración guardada")}catch(e){toast("Error: "+e.message)}}
+function image(){var c=document.createElement("canvas"),x=c.getContext("2d"),W=1080,H=1350;c.width=W;c.height=H;x.fillStyle="#0b0d10";x.fillRect(0,0,W,H);x.fillStyle="#d8b76e";x.font="700 28px Arial";x.fillText("RIFA · "+String(S.set.location||"MEDELLÍN").toUpperCase(),60,70);x.fillStyle="#f7f8fa";x.font="800 38px Arial";x.fillText("iPhone + Apple Watch",60,130);x.fillStyle="#9da6b2";x.font="600 25px Arial";x.fillText("Boleta: "+money(S.set.ticket_price),60,180);var gap=10,cell=(W-120-gap*9)/10,gy=240;S.nums.forEach(function(n,i){var r=Math.floor(i/10),co=i%10,cx=60+co*(cell+gap),cy=gy+r*(cell+gap);x.fillStyle=n.status==="paid"?"#153e2d":n.status==="pending"?"#4b2025":"#262c34";x.fillRect(cx,cy,cell,cell);x.strokeStyle=n.status==="paid"?"#2d8f65":n.status==="pending"?"#b7434b":"#3b424c";x.strokeRect(cx,cy,cell,cell);x.fillStyle=n.status==="paid"?"#a5efcb":n.status==="pending"?"#ffb4b8":"#fff";x.font="800 23px Arial";x.textAlign="center";x.textBaseline="middle";x.fillText(fmt(n.number),cx+cell/2,cy+cell/2);if(n.status==="pending"){x.strokeStyle="#ef5961";x.lineWidth=4;x.beginPath();x.moveTo(cx+12,cy+cell-14);x.lineTo(cx+cell-12,cy+14);x.stroke()}});x.textAlign="left";x.textBaseline="alphabetic";x.fillStyle="#9da6b2";x.font="600 22px Arial";x.fillText("Disponible · Separado/debe · Pagado",60,1240);c.toBlob(function(b){var f;try{f=new File([b],"avance_rifa.png",{type:"image/png"})}catch(e){}if(f&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:"Avance rifa"}).catch(function(){});else{var u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="avance_rifa.png";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},2000)}},"image/png")}
+function tab(v){document.querySelectorAll(".view").forEach(function(q){q.classList.toggle("active",q.id==="v"+v)});document.querySelectorAll(".tab").forEach(function(q){q.classList.toggle("active",q.dataset.v===v)});scrollTo(0,0)}
+function bind(){E("adminBtn").onclick=function(){if(S.session)tab("People");else modal("loginBack",true)};E("cancelLogin").onclick=function(){modal("loginBack",false)};E("login").onclick=login;E("addBtn").onclick=function(){var n=S.nums.find(function(x){return x.status==="available"});if(n)openP(n.number)};E("cancelP").onclick=function(){modal("pBack",false)};E("saveP").onclick=saveP;E("release").onclick=release;E("search").oninput=renderPeople;E("saveConfig").onclick=saveConfig;E("imageBtn").onclick=image;E("logout").onclick=function(){clearSession();S.people=[];admin(false);renderPeople();tab("Rifa");toast("Sesión cerrada")};document.querySelectorAll(".tab").forEach(function(q){q.onclick=function(){tab(q.dataset.v)}})}
+async function init(){bind();loadSession();await publicLoad();if(S.session)await privateLoad();else admin(false);setInterval(async function(){await publicLoad();if(S.session)await privateLoad()},5000)}
+init();
+})();
+</script></body></html>
